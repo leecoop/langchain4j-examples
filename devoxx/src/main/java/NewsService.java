@@ -23,11 +23,11 @@ public class NewsService {
         News newsAgant = AiServices.create(News.class, model);
 
 
-        Response response = newsAgant.analyzeSentimentOf("Consumer prices in China fell for the third straight month in December highlighting the risk of deflation, while exports expanded more than expected despite the weak global trade.\n" +
-                "\n" +
-                "The consumer price index, or CPI, dropped 0.3 percent annually after a 0.5 percent decline in November, the National Bureau of Statistics said Friday. This was the third consecutive fall.\n" +
-                "\n" +
-                "Separate data showed that producer prices continued to decline in December. Producer prices decreased 2.7 percent from the previous year, following a 3.0 percent decrease in November. Concerns about low inflation is likely to linger for a while, leading policymakers to err in favor of keeping the policy stance supportive in the near-term, economists at Capital Economics said.");
+        Response response = newsAgant.analyzeSentimentOf("""
+                                                                    Adding the strong gains in the previous four sessions, the Japanese stock market is significantly higher on Friday, following the mixed cues from Wall Street overnight. The benchmark Nikkei 225 is moving above the 35,400 level, with gains across most sectors led by index heavyweights and exporter stocks.
+                                
+                                The benchmark Nikkei 225 Index is gaining 372.73 points or 1.06 percent to 35,422.59, after touching a fresh 34-year high of 35,839.65 earlier. Japanese stocks closed sharply higher on Thursday.
+                """);
         System.out.println(response);
 
 
@@ -41,12 +41,14 @@ public class NewsService {
 
         private Sentiment sentiment;
         private List<String> keywords;
+        private List<String> currencies;
 
         @Override
         public String toString() {
             return "Response{" +
                     "sentiment=" + sentiment +
-                    ", keywords=" + keywords +
+                    "\n, keywords=" + keywords +
+                    "\n, currencies=" + currencies +
                     '}';
         }
     }
@@ -56,7 +58,7 @@ public class NewsService {
 
     interface News {
 
-        @SystemMessage("Analyze sentiment of {{article}} forex news article and extract meaningful financial keywords")
+        @SystemMessage("Analyze sentiment of {{article}} forex news article ,extract meaningful financial keywords and suggest relevant forex trading pairs in format like EURUSD")
         Response analyzeSentimentOf(@V("article") String article);
 
 
